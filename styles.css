@@ -1,0 +1,192 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#viewerContainer {
+    position: relative;
+}
+
+#viewer {
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    background: url('pic/back.png') no-repeat center center;
+    background-size: cover;
+}
+
+#carImage {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+#fullscreen, #exitFullscreen {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: white;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#exitFullscreen {
+    display: none;
+    top: 10px;
+    bottom: auto;
+    right: 10px;
+}
+
+#info {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: #e0f7fa;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    color: #00796b;
+}
+
+.icon {
+    position: absolute;
+    bottom: 10px;
+    background: white;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10001;
+    text-align: center;
+    /*display: none;*/
+}
+
+.icon img {
+    width: 50px;
+    height: 50px;
+}
+
+.icon h4 {
+    margin: 5px 0 0 0;
+    font-size: 12px;
+    color: black;
+}
+
+#pvr {
+    left: 70px;
+}
+
+#p360 {
+    left: 0;
+}
+
+#colorOptions {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.colorOption {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0 10px;
+    cursor: pointer;
+    border: 2px solid black;
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    left: 50%;
+    top: 50%;
+    width: 400px;
+    padding: 12px 0 12px 14px;
+    background: rgba(5, 15, 34, .8);
+    border-radius: 8px;
+    transform: translate3d(-50%, -50%, 0);
+    color: #bfc5d2;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+#modalContent {
+    position: relative;
+}
+
+#closeModal {
+    color: #aaa;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#closeModal:hover,
+#closeModal:focus {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    display: none; /* Hiding the default element */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    #viewer {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        padding: 5px;
+    }
+
+    .icon img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .icon h4 {
+        font-size: 10px;
+    }
+
+    #modal {
+        width: 90vw; /* Width 90% of screen width */
+        padding: 10px;
+        font-size: 10px;
+    }
+
+}

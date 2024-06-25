@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spherical Panorama</title>
+    <!-- Sets the page title -->
+    <meta charset="utf-8">
+    <!-- Sets the page encoding as UTF-8 -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- Sets the viewport parameters for mobile devices -->
+    <script type="module">
+        // Importing Three.js as a module
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.module.js';
+
+        // Declaring variables for camera, scene, and renderer
+        let camera, scene, renderer;
+        // Variables for managing user interaction
+        let isUserInteracting = false,
+            onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+            lon = 0, onMouseDownLon = 0,
+            lat = 0, onMouseDownLat = 0,
+            phi = 0, theta = 0;
+
+        // Initializing the scene and camera
+        init();
+        // Starting the animation
+        animate();
+
+        function init() {
+            // Creating a container for the scene and adding it to the document body
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+
+            // Creating a camera with a 75-degree field of view, aspect ratio of the screen, and a draw distance from 1 to 1100
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
+            // Setting the camera's target point
+            camera.target = new THREE.Vector3(0, 0, 0);
+
+            // Creating a new scene
+            scene = new THREE.Scene();
+
+            // Creating a spherical geometry with a radius of 500 and a resolution of 60x40 segments
+            const geometry = new THREE.SphereGeometry(500, 60, 40);
+            // Inverting the geometry so that the texture is visible from the inside
+            geometry.scale(-1, 1, 1);
+
+            // Loading a spherical image texture
+            const texture = new THREE.TextureLoader().load('pic/345.jpg', (texture) => {
+                // Optionally, you can adjust the intensity and other texture parameters
+                texture.encoding = THREE.sRGBEncoding;  // Setting the correct encoding for the texture
+            });
+            // Creating a material with the loaded texture
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+
+            // Creating a mesh and adding it to the scene
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            // Creating a WebGL renderer and setting its size
+            renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.outputEncoding = THREE.sRGBEncoding;  // Setting the correct encoding for the render
+
+            // Adding the renderer to the container
+            container.appendChild(renderer.domElement);
+
+            // Adding event handlers for camera control
+            document.addEventListener('mousedown', onDocumentMouseDown, false);
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('mouseup', onDocumentMouseUp, false);
+            document.addEventListener('wheel', onDocumentMouseWheel, false);
+
+            // Handler for window resize event
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onWindowResize() {
+            // Updating the camera aspect ratio and renderer size when the window size changes
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onDocumentMouseDown(event) {
+            // Handling the start of user interaction with the mouse
+            event.preventDefault();
+            isUserInteracting = true;
+            onMouseDownMouseX = event.clientX;
+            onMouseDownMouseY = event.clientY;
+            onMouseDownLon = lon;
+            onMouseDownLat = lat;
+        }
+
+        function onDocumentMouseMove(event) {
+            // Handling mouse movement
+            if (isUserInteracting) {
+                lon = (onMouseDownMouseX - event.clientX) * 0.1 + onMouseDownLon;
+                lat = (event.clientY - onMouseDownMouseY) * 0.1 + onMouseDownLat;
+            }
+        }
+
+        function onDocumentMouseUp() {
+            // Handling the end of user interaction with the mouse
+            isUserInteracting = false;
+        }
+
+        function onDocumentMouseWheel(event) {
+            // Handling mouse wheel scrolling to change the camera's field of view
+            camera.fov += event.deltaY * 0.05;
+            camera.updateProjectionMatrix();
+        }
+
+        function animate() {
+            // Animation function, called every frame
+            requestAnimationFrame(animate);
+            update();
+        }
+
+        function update() {
+            // Updating the camera position based on the angles lon and lat
+            lat = Math.max(-85, Math.min(85, lat));
+            phi = THREE.MathUtils.degToRad(90 - lat);
+            theta = THREE.MathUtils.degToRad(lon);
+
+            // Setting the camera's target point
+            camera.target.x = Math.sin(phi) * Math.cos(theta);
+            camera.target.y = Math.cos(phi);
+            camera.target.z = Math.sin(phi) * Math.sin(theta);
+
+            // Camera looks at the target point
+            camera.lookAt(camera.target);
+
+            // Rendering the scene
+            renderer.render(scene, camera);
+        }
+    </script>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        /* Removes margins and makes the canvas a block element */
+    </style>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Degree Car Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="viewerContainer">
+    <div id="viewer">
+        <img id="carImage" src="pic/test/white/1.png" alt="Car Image">
+        <div id="fullscreen">
+            ⛶
+        </div>
+        <div id="exitFullscreen">
+            ❌
+        </div>
+        <div id="info">
+            ℹ️
+        </div>
+        <div class="icon"  id="pvr">
+            <a href="index-vr.html"><img src="pic/vr.png" alt="VR Icon"></a>
+            <h4>VR Mode</h4>
+        </div>
+        <div class="icon" id="p360" >
+            <a href="#"><img src="pic/360.png" alt="360 Icon"></a>
+            <h4>360 View</h4>
+        </div>
+        <div id="colorOptions">
+            <div class="colorOption" style="background-color: white;" onclick="changeColor('white')"></div>
+            <div class="colorOption" style="background-color: red;" onclick="changeColor('red')"></div>
+            <div class="colorOption" style="background-color: yellow;" onclick="changeColor('yellow')"></div>
+        </div>
+
+        <div class="overlay" id="overlay">Turn your phone upside down</div>
+        <div id="modal">
+            <span id="closeModal">&times;</span>
+            <div id="modalContent">
+                <h2>Vehicle information</h2>
+                <p>Here will be brief information about the car.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
